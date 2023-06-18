@@ -1,0 +1,15 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+:focus {
+  outline: none;
+}
+:root {
+
+}
+body {
+  font-size: 1rem;
+  font-family: sans-serif;
+}

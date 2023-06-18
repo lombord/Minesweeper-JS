@@ -1,0 +1,188 @@
+@font-face {
+  font-family: "Digital";
+  src: url("../fonts/digital.ttf");
+}
+
+.main-box {
+  --max-with: 40em;
+  --min-width: 20em;
+
+  --field-bg: rgb(204, 204, 204);
+  --border-dark: rgb(215, 215, 215);
+  --border-outset: white var(--border-dark) var(--border-dark) white;
+  --col-border: 0.1em solid rgb(83, 83, 83);
+  --border-inset: var(--border-dark) white white var(--border-dark);
+
+  --col-1: blue;
+  --col-2: green;
+  --col-3: red;
+  --col-4: darkblue;
+  --col-5: darkred;
+  --col-6: cyan;
+  --col-7: black;
+  --col-8: rgb(101, 101, 101);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 95%;
+  max-width: var(--max-with);
+  min-width: var(--min-with);
+  margin: 0 auto;
+  margin-top: 2em;
+  background-color: var(--field-bg);
+  border: 0.4em outset rgb(255, 255, 255);
+  border-color: var(--border-outset);
+  padding: 1em;
+}
+
+.info-box {
+  display: flex;
+  justify-content: space-between;
+  border: 0.3em inset;
+  border-color: var(--border-inset);
+  align-items: stretch;
+  padding: 0.7em 1em;
+  font-size: 1.2rem;
+}
+
+.mines,
+.time-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: 900;
+  text-shadow: .1em .1em 0.1em rgba(255, 0, 0, 0.426);
+  color: red;
+  font-family: "Digital", Arial;
+  background-color: black;
+  padding: 0.3em 0.2em;
+  border: 0.15em inset;
+  border-color: var(--border-inset);
+}
+
+.mines {
+}
+
+.restart-btn {
+  overflow: hidden;
+  width: 7em;
+  background-color: gray;
+  border: none;
+  padding: 0.2em;
+}
+
+.restart-btn:active > img {
+  border: none;
+}
+
+.restart-btn img {
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  border: 0.7em outset;
+  border-color: var(--border-outset);
+  background-color: var(--field-bg);
+}
+
+.time-counter {
+}
+
+.field-grid {
+  position: relative;
+  margin-top: 1em;
+  border: 0.4em inset;
+  border-color: var(--border-inset);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+}
+
+.game-over::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.field-grid > * {
+  position: relative;
+  font-size: 2.3rem;
+  padding: calc(50% - 1em / 2) 0;
+  text-align: center;
+  font-weight: 900;
+  border-top: var(--col-border);
+  border-left: var(--col-border);
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.field-grid > *::before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: 0.25em outset;
+  border-color: var(--border-outset);
+  background-color: var(--field-bg);
+}
+
+.field-grid > *:not(.marked):active:hover::before,
+.activated:not(.marked)::before {
+  border: none;
+}
+
+.opened::before {
+  content: none;
+}
+
+.mine {
+  display: flex;
+  justify-content: center;
+}
+
+.mine img {
+  display: block;
+  height: 1em;
+}
+
+.marked::before {
+  background-image: url("../col-icons/marked.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.col-1 {
+  color: var(--col-1);
+}
+.col-2 {
+  color: var(--col-2);
+}
+.col-3 {
+  color: var(--col-3);
+}
+.col-4 {
+  color: var(--col-4);
+}
+.col-5 {
+  color: var(--col-5);
+}
+.col-6 {
+  color: var(--col-6);
+}
+.col-7 {
+  color: var(--col-7);
+}
+.col-8 {
+  color: var(--col-8);
+}
