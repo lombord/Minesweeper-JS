@@ -220,6 +220,10 @@ class Field {
    * @param {number} sec - new seconds value
    */
   set seconds(sec) {
+    if (sec >= 1000) {
+      this.loseGame();
+      sec = 999;
+    }
     this._seconds = sec;
     this.timeElm.innerText = `${sec}`.padStart(3, "0");
   }
