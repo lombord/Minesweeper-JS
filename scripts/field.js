@@ -1,130 +1,5 @@
-class BaseCell {
-  constructor(x, y, field) {
-    this.x = x;
-    this.y = y;
-    this.field = field;
-    this.marked = false;
-    this.ogOpen = this.open;
-    this.open = this.checkMarked;
-    this.neighborCords = Array.from(this.getNeighborCords());
-  }
-
-  setElm(elm) {
-    this.elm = elm;
-    this.elm.onclick = (ev) => this.open(ev);
-    this.elm.oncontextmenu = () => {
-      this.marked = this.elm.classList.toggle("marked");
-      this.field.changeMark(-this.marked || 1);
-      return false;
-    };
-  }
-
-  get field() {
-    return this._field.deref();
-  }
-
-  set field(field) {
-    this._field = new WeakRef(field);
-  }
-
-  checkMarked(...args) {
-    if (!this.marked) return this.ogOpen(...args);
-  }
-
-  open() {
-    this.elm.classList.add("opened");
-    this.elm.oncontextmenu = () => false;
-    this.open = this.ogOpen;
-  }
-
-  *getNeighborCords() {
-    const [bX, bY] = [this.x - 1, this.y - 1];
-    for (let y = bY; y < Math.min(bY + 3, this.field.H); y++) {
-      for (let x = bX; x < Math.min(bX + 3, this.field.W); x++) {
-        if (x >= 0 && y >= 0 && !(this.x == x && this.y == y)) yield [y, x];
-      }
-    }
-  }
-  *getNeighbors() {
-    for (let [y, x] of this.neighborCords) yield this.field.field[y][x];
-  }
-}
-
-class Cell extends BaseCell {
-  constructor(x, y, field) {
-    super(x, y, field);
-    this.mines = 0;
-    this.opened = false;
-  }
-
-  setElm(elm) {
-    super.setElm(elm);
-    this.elm.innerHTML = `${this.mines || "&nbsp"}`;
-    elm.classList.add(`col-${this.mines}`);
-  }
-
-  open2() {
-    let count = 0;
-    for (let cell of this.getNeighbors()) count += cell.marked;
-    count >= this.mines && this.openNeighbors();
-  }
-
-  activeNeighbors(met) {
-    for (let cell of this.getNeighbors()) {
-      cell.elm.classList[met]("activated");
-    }
-  }
-
-  open() {
-    if (this.opened) return;
-    super.open();
-    this.elm.classList.add("cell-opened");
-    this.opened = true;
-    this.field.checkWin();
-    if (!this.mines) {
-      this.openNeighbors();
-    } else {
-      this.open = this.open2;
-      this.elm.onmousedown = () => this.activeNeighbors("add");
-      this.elm.onmouseup = this.elm.onmouseout = () =>
-        this.activeNeighbors("remove");
-    }
-  }
-
-  openNeighbors() {
-    for (let cell of this.getNeighbors()) if (!cell.opened) cell.open();
-  }
-}
-
-class Mine extends BaseCell {
-  constructor(x, y, field) {
-    super(x, y, field);
-    this.markCells();
-  }
-
-  markCells() {
-    for (let cell of this.getNeighbors()) {
-      cell instanceof Cell && cell.mines++;
-    }
-  }
-
-  setElm(elm) {
-    super.setElm(elm);
-    elm.classList.add("mine");
-    this.elm.innerHTML = `<img src="col-icons/mine.png" alt="">`;
-  }
-
-  reveal() {
-    super.open();
-  }
-
-  open(ev) {
-    this.elm.innerHTML = `<img src="col-icons/origin-mine.png" alt="">`;
-    super.open();
-    this.field.loseGame();
-    ev.stopPropagation();
-  }
-}
+import { Cell } from "./cell.js";
+import { Mine } from "./mine.js";
 
 class Field {
   constructor(width, height, mines) {
@@ -222,11 +97,23 @@ class Field {
     this.mines.forEach(
       (c) => !c.marked && c.elm.dispatchEvent(new Event("contextmenu"))
     );
+    this.resetBtn.classList.add("win-btn");
+    this.resetBtn.addEventListener(
+      "click",
+      () => this.resetBtn.classList.remove("win-btn"),
+      { once: true }
+    );
     this.endGame();
   }
 
   loseGame() {
     this.mines.forEach((m) => m.reveal());
+    this.resetBtn.classList.add("lose-btn");
+    this.resetBtn.addEventListener(
+      "click",
+      () => this.resetBtn.classList.remove("lose-btn"),
+      { once: true }
+    );
     this.endGame();
   }
 
@@ -270,8 +157,4 @@ class Field {
   }
 }
 
-function main() {
-  const field = new Field(9, 9, 10);
-}
-
-main();
+export { Field };

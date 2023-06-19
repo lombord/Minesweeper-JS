@@ -10,7 +10,7 @@
   --field-bg: rgb(204, 204, 204);
   --border-dark: rgb(215, 215, 215);
   --border-outset: white var(--border-dark) var(--border-dark) white;
-  --col-border: 0.1em solid rgb(83, 83, 83);
+  --col-border: 0.05em solid rgb(83, 83, 83);
   --border-inset: var(--border-dark) white white var(--border-dark);
 
   --col-1: blue;
@@ -52,7 +52,7 @@
   align-items: center;
   font-size: 3rem;
   font-weight: 900;
-  text-shadow: .1em .1em 0.1em rgba(255, 0, 0, 0.426);
+  text-shadow: 0.1em 0.1em 0.1em rgba(255, 0, 0, 0.426);
   color: red;
   font-family: "Digital", Arial;
   background-color: black;
@@ -72,17 +72,31 @@
   padding: 0.2em;
 }
 
-.restart-btn:active > img {
+.restart-btn:active > .img-box {
   border: none;
 }
 
-.restart-btn img {
+.restart-btn .img-box {
   display: block;
   width: 100%;
+  height: 100%;
   padding: 0.5em;
   border: 0.7em outset;
   border-color: var(--border-outset);
   background-color: var(--field-bg);
+  background-origin: content-box;
+  background-image: url("../col-icons/smiley.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.win-btn .img-box {
+  background-image: url("../col-icons/win-smile.png");
+}
+
+.lose-btn .img-box {
+  background-image: url("../col-icons/dead-smiley.png");
 }
 
 .time-counter {
@@ -135,6 +149,9 @@
   border: 0.25em outset;
   border-color: var(--border-outset);
   background-color: var(--field-bg);
+  background-origin: content-box;
+  padding: 0.1em;
+  padding-top: 0.05em;
 }
 
 .field-grid > *:not(.marked):active:hover::before,
