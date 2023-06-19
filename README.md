@@ -11,3 +11,7 @@ in working progress.I'll improve the game and eventually will add it to my webap
 
 In order to run the game you should use local server and open index.html using your browser (for exp: Chrome, Firefox, Opera, etc..)
     
+## Update 6/19/2023
+- Classes have been separated into different files
+- Added new smile emojies
+- Fixed bugs
