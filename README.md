@@ -15,3 +15,6 @@ In order to run the game you should use local server and open index.html using y
 - Classes have been separated into different files
 - Added new smile emojies
 - Fixed bugs
+
+## Update 6/19/2023 2
+- Added documentation for each class and method
