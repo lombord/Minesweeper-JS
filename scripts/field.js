@@ -25,13 +25,13 @@ class Field {
    * @param {number} mines - number of mines
    */
   setSettings(width, height, mines) {
-    this.W = width;
-    this.H = height;
-    this.minesL = Math.min(Number(mines), width * height);
+    this.W = Math.min(Number(width), 100);
+    this.H = Math.min(Number(height), 100);
+    this.minesL = Math.min(Number(mines), this.W * this.H, 999);
     this.winCount = this.W * this.H - this.minesL;
     // setup elements' settings
-    this.fieldElm.style.gridTemplateColumns = `repeat(${width}, 4em)`;
-
+    this.fieldElm.style.gridTemplateColumns = `repeat(${this.W}, 4em)`;
+    
     this.startNewGame();
   }
 
