@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="" />
     <!-- style resetter -->
-    <link rel="stylesheet"
-          href="https://meyerweb.com/eric/tools/css/reset/reset.css">
+    <link
+      rel="stylesheet"
+      href="https://meyerweb.com/eric/tools/css/reset/reset.css"
+    />
     <!-- my styles -->
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/style.css" />
     <title>Minesweeper</title>
   </head>
   <body>
     <main class="main-box">
+      <form id="settingsForm" class="settings">
+        <input
+          type="number"
+          name="size"
+          placeholder="size"
+          min="7"
+          max="100"
+          required
+        />
+        <input
+          type="number"
+          name="mines"
+          placeholder="mines"
+          min="1"
+          max="999"
+          required
+        />
+        <button type="submit">Change</button>
+      </form>
       <div class="info-box">
         <div id="markElm" class="mines">10</div>
         <button class="restart-btn" id="restartBtn">

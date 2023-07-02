@@ -5,6 +5,14 @@ import { Field } from "./scripts/field.js";
  */
 function main() {
   const field = new Field(9, 9, 10);
+  document.getElementById("settingsForm").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const {
+      size: { value: size },
+      mines: { value: mines },
+    } = ev.target;
+    field.setSettings(size, size, mines);
+  });
 }
 
 main();

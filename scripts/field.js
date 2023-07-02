@@ -13,9 +13,8 @@ class Field {
    * @param {number} mines - number of mines
    */
   constructor(width, height, mines) {
-    this.setSettings(width, height, mines);
     this.setElements();
-    this.startNewGame();
+    this.setSettings(width, height, mines);
   }
 
   /**
@@ -28,8 +27,12 @@ class Field {
   setSettings(width, height, mines) {
     this.W = width;
     this.H = height;
-    this.minesL = mines;
+    this.minesL = Math.min(Number(mines), width * height);
     this.winCount = this.W * this.H - this.minesL;
+    // setup elements' settings
+    this.fieldElm.style.gridTemplateColumns = `repeat(${width}, 4em)`;
+
+    this.startNewGame();
   }
 
   /**
@@ -48,8 +51,9 @@ class Field {
    */
   startNewGame() {
     this.field = [];
+    this.playing = true;
     this.openedCount = 0;
-    this.clearFieldElm();
+    this.clearFieldElms();
     this.fillField();
     this.createMines();
     this.createElements();
@@ -59,7 +63,9 @@ class Field {
   /**
    * Clears HTMLElement of a field
    */
-  clearFieldElm() {
+  clearFieldElms() {
+    this.resetBtn.classList.remove("win-btn");
+    this.resetBtn.classList.remove("lose-btn");
     this.fieldElm.innerHTML = "";
     this.fieldElm.classList.remove("game-over");
   }
@@ -113,7 +119,9 @@ class Field {
     this.fieldElm.addEventListener(
       "click",
       () => {
-        this.timeID = setInterval(() => this.seconds++, 1000);
+        if (this.playing) {
+          this.timeID = setInterval(() => this.seconds++, 1000);
+        }
       },
       { once: true }
     );
@@ -149,11 +157,7 @@ class Field {
       (c) => !c.marked && c.elm.dispatchEvent(new Event("contextmenu"))
     );
     this.resetBtn.classList.add("win-btn");
-    this.resetBtn.addEventListener(
-      "click",
-      () => this.resetBtn.classList.remove("win-btn"),
-      { once: true }
-    );
+    this.fieldElm.setAttribute("winText", "Win");
     this.endGame();
   }
 
@@ -163,11 +167,7 @@ class Field {
   loseGame() {
     this.mines.forEach((m) => m.reveal());
     this.resetBtn.classList.add("lose-btn");
-    this.resetBtn.addEventListener(
-      "click",
-      () => this.resetBtn.classList.remove("lose-btn"),
-      { once: true }
-    );
+    this.fieldElm.setAttribute("winText", "Lose");
     this.endGame();
   }
 
@@ -175,6 +175,7 @@ class Field {
    * Ends the game
    */
   endGame() {
+    this.playing = false;
     this.stopTimer();
     this.fieldElm.classList.add("game-over");
   }

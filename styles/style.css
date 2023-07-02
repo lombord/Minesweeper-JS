@@ -4,9 +4,6 @@
 }
 
 .main-box {
-  --max-with: 40em;
-  --min-width: 20em;
-
   --field-bg: rgb(204, 204, 204);
   --border-dark: rgb(215, 215, 215);
   --border-outset: white var(--border-dark) var(--border-dark) white;
@@ -24,15 +21,26 @@
 
   display: grid;
   grid-template-columns: 1fr;
-  width: 95%;
-  max-width: var(--max-with);
-  min-width: var(--min-with);
+  width: fit-content;
   margin: 0 auto;
   margin-top: 2em;
   background-color: var(--field-bg);
   border: 0.4em outset rgb(255, 255, 255);
   border-color: var(--border-outset);
   padding: 1em;
+}
+.settings {
+  border: 0.3em inset;
+  border-color: var(--border-inset);
+  margin-bottom: 0.5em;
+  padding: 0.5em 0;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.settings > input {
+  padding: 0.4em;
 }
 
 .info-box {
@@ -109,7 +117,10 @@
   border: 0.4em inset;
   border-color: var(--border-inset);
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(9, minmax(0.5em, 4em));
+}
+
+.game-over {
 }
 
 .game-over::before {
@@ -119,7 +130,24 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.game-over::after {
+  content: "You " attr(winText) "!";
+  position: absolute;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  text-align: center;
+  top: calc(50% - 1em);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
 }
 
 .field-grid > * {
