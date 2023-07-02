@@ -67,6 +67,7 @@
 .restart-btn {
   overflow: hidden;
   width: 7em;
+  min-height: 6.5em;
   background-color: gray;
   border: none;
   padding: 0.2em;
@@ -202,4 +203,11 @@
 }
 .col-8 {
   color: var(--col-8);
+}
+
+@media screen and (max-width: 512px) {
+  .mines,
+  .time-counter {
+    font-size: 2rem;
+  }
 }
