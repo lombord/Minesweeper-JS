@@ -20,7 +20,7 @@ class Cell extends BaseCell {
    */
   setElm(elm) {
     super.setElm(elm);
-    this.elm.innerHTML = `${this.mines || "&nbsp"}`;
+    elm.innerHTML = `${this.mines || "&nbsp"}`;
     elm.classList.add(`col-${this.mines}`);
   }
 
@@ -55,16 +55,17 @@ class Cell extends BaseCell {
   open() {
     if (this.opened) return;
     super.open();
-    this.elm.classList.add("cell-opened");
+    const { elm } = this;
+    elm.classList.add("cell-opened");
     this.opened = true;
     this.field.checkWin();
+    // if empty cell then open neighbors
     if (!this.mines) {
       this.openNeighbors();
     } else {
       this.open = this.open2;
-      this.elm.onmousedown = () => this.activeNeighbors("add");
-      this.elm.onmouseup = this.elm.onmouseout = () =>
-        this.activeNeighbors("remove");
+      elm.onmousedown = () => this.activeNeighbors("add");
+      elm.onmouseup = elm.onmouseout = () => this.activeNeighbors("remove");
     }
   }
 
