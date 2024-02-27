@@ -9,14 +9,22 @@ class BaseCell {
    * @param {Field} field - field where cell is created.
    */
   constructor(x, y, field) {
+    // coordinates
     this.x = x;
     this.y = y;
     this.field = field;
-    // marked state property
+
+    // setup border coordinate ranges
+    const { min, max } = Math;
+    const [bX, bY] = [x - 1, y - 1];
+    [this.yStart, this.yStop] = [max(bY, 0), min(bY + 3, field.H)];
+    [this.xStart, this.xStop] = [max(bX, 0), min(bX + 3, field.W)];
+
+    // marked flag
     this.marked = false;
+    // open methods
     this.ogOpen = this.open;
     this.open = this.checkMarked;
-    this.neighborCords = Array.from(this.getNeighborCords());
   }
 
   /**
@@ -27,9 +35,9 @@ class BaseCell {
    */
   setElm(elm) {
     this.elm = elm;
-    this.elm.onclick = (ev) => this.open(ev);
-    this.elm.oncontextmenu = () => {
-      this.marked = this.elm.classList.toggle("marked");
+    elm.onclick = (ev) => this.open(ev);
+    elm.oncontextmenu = () => {
+      this.marked = elm.classList.toggle("marked");
       this.field.changeMark(-this.marked || 1);
       return false;
     };
@@ -76,20 +84,21 @@ class BaseCell {
    * @yield {array} (x, y) axises of neighbor cell
    */
   *getNeighborCords() {
-    const [bX, bY] = [this.x - 1, this.y - 1];
-    for (let y = bY; y < Math.min(bY + 3, this.field.H); y++) {
-      for (let x = bX; x < Math.min(bX + 3, this.field.W); x++) {
-        if (x >= 0 && y >= 0 && !(this.x == x && this.y == y)) yield [y, x];
+    const { x: cellX, y: cellY, yStart, yStop, xStart, xStop } = this;
+    for (let y = yStart; y < yStop; y++) {
+      for (let x = xStart; x < xStop; x++) {
+        if (!(x == cellX && y == cellY)) yield [y, x];
       }
     }
   }
+
   /**
    * Generator to get neighbor cells based on their coordinates
    * @summary yields cell object in each iteration
    * @yield {BaseCell} cell object
    */
   *getNeighbors() {
-    for (let [y, x] of this.neighborCords) yield this.field.field[y][x];
+    for (let [y, x] of this.getNeighborCords()) yield this.field.field[y][x];
   }
 }
 

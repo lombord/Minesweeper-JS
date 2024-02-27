@@ -7,7 +7,7 @@ import { Mine } from "./mine.js";
 class Field {
   /**
    * Creates field by given 'width', 'height', 'mines'.
-   * @summary creates field, initializes settings and starts the game
+   * @summary initializes settings and starts the game
    * @param {number} width - width of a field
    * @param {number} height - height of a field
    * @param {number} mines - number of mines
@@ -31,7 +31,7 @@ class Field {
     this.winCount = this.W * this.H - this.minesL;
     // setup elements' settings
     this.fieldElm.style.gridTemplateColumns = `repeat(${this.W}, 4em)`;
-    
+
     this.startNewGame();
   }
 
